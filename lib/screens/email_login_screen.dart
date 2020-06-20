@@ -432,9 +432,133 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
               )));
     }
 
+    _getEmailAndPasswordInput() {
+      return Container(
+          padding: EdgeInsets.all(16.0),
+          child: new Form(
+              key: _formKey,
+              child: ListView(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 32),
+                    child: TextFormField(
+                      maxLines: 1,
+                      keyboardType: TextInputType.emailAddress,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                          hintText: strings.email,
+                          icon: Icon(
+                            Icons.mail,
+                            color: Colors.grey,
+                          )),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return strings.emailCantBeEmpty;
+                        } else if (!isValidEmail(value)) {
+                          return strings.emailNotValid;
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => _email = value,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 32),
+                    child: new TextFormField(
+                      maxLines: 1,
+                      obscureText: true,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                          hintText: strings.passwordHint,
+                          icon: Icon(
+                            Icons.lock,
+                            color: Colors.grey,
+                          )),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return strings.passwordEmpty;
+                        }
+
+                        //This check is not done in sign up
+                        /*if(value.length<6){
+                          return strings.passwordTooShort;
+                        }*/
+
+                        return null;
+                      },
+                      onSaved: (value) => _password = value,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(right: 16),
+                          child: FlatButton(
+                            child: Text(
+                              strings.forgotPassword,
+                              style: TextStyle(color: mainColor),
+                            ),
+                            onPressed: () {
+                              _showDialogForResetPassword(_email);
+                            },
+                          ),
+                        ),
+                      ),
+                      RaisedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            print("$_email $_password");
+                            await _accessWithEmail(_Mode.LOGIN);
+                          }
+                        },
+                        color: mainColor,
+                        child: Text(
+                          strings.next,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: _showErrorMessage(),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            setState(() {
+                              _loading = true;
+                            });
+                            _isEmailRegistered =
+                            await _authState.isEmailRegistered(_email);
+                            print("$_email $_isEmailRegistered");
+                            setState(() {
+                              _loading = false;
+                            });
+                          }
+                        },
+                        color: mainColor,
+                        child: Text(
+                          strings.next,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )));
+    }
+
     var _mainWidget = Container();
     if (_email == null && _isEmailRegistered == null) {
-      _mainWidget = _getEmailInput();
+      _mainWidget = _getEmailAndPasswordInput();
     } else if (_isEmailRegistered != null && _isEmailRegistered) {
       _mainWidget = _getPasswordInput();
     } else if (_isEmailRegistered != null && !_isEmailRegistered) {
