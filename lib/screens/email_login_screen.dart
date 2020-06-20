@@ -212,7 +212,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return strings.emailCantBeEmpty;
-                        } else if (!isValidEmail(value, _authState)) {
+                        } else if (!isValidEmail(value)) {
                           return strings.emailNotValid;
                         }
                         return null;
@@ -454,8 +454,10 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return strings.emailCantBeEmpty;
-                        } else if (!isValidEmail(value, _authState)) {
+                        } else if (!isValidEmail(value)) {
                           return strings.emailNotValid;
+                        } else if (!isRegisteredEmail(email, _authState)) {
+                          return strings.errorUserNotFound;
                         }
                         return null;
                       },
@@ -556,10 +558,12 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   }
 }
 
-bool isValidEmail(String email, AuthState _authState) {
-  bool registered;
+bool isValidEmail(String email) {
+  return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+}
 
-  return (RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email) && _authState.isEmailRegistered(email).then((registered) {
-    setState(() {this.registered = registered;});
-  }));
+bool isRegisteredEmail(String email, AuthState _authState) async{
+  bool registered = await (_authState.isEmailRegistered(email));
+
+  return registered;
 }
