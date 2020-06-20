@@ -432,7 +432,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
               )));
     }
 
-    _getEmailAndPasswordInput() async {
+    _getEmailAndPasswordInput() {
       return Container(
           padding: EdgeInsets.all(16.0),
           child: new Form(
