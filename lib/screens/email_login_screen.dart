@@ -212,7 +212,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return strings.emailCantBeEmpty;
-                        } else if (!isValidEmail(value)) {
+                        } else if (!isValidEmail(value, _authState)) {
                           return strings.emailNotValid;
                         }
                         return null;
@@ -454,7 +454,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return strings.emailCantBeEmpty;
-                        } else if (!isValidEmail(value)) {
+                        } else if (!isValidEmail(value, _authState)) {
                           return strings.emailNotValid;
                         }
                         return null;
@@ -556,6 +556,6 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   }
 }
 
-bool isValidEmail(String email) {
+bool isValidEmail(String email, String _authState) {
   return (RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email) && _authState.isEmailRegistered(email));
 }
