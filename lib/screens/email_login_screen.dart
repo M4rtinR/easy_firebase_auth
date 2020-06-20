@@ -562,7 +562,7 @@ bool isValidEmail(String email) {
   return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
 }
 
-bool isRegisteredEmail(String email, AuthState _authState) async{
+bool isRegisteredEmail(String email, AuthState _authState) {
   bool registered = await (_authState.isEmailRegistered(email));
 
   return registered;
