@@ -525,39 +525,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   Padding(
                     padding: EdgeInsets.all(16),
                     child: _showErrorMessage(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      RaisedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
-                            setState(() {
-                              _loading = true;
-                            });
-                            _isEmailRegistered =
-                            await _authState.isEmailRegistered(_email);
-                            print("$_email $_isEmailRegistered");
-                            setState(() {
-                              _loading = false;
-                            });
-                          }
-                        },
-                        color: mainColor,
-                        child: Text(
-                          strings.next,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    ],
                   )
                 ],
               )));
     }
 
     var _mainWidget = Container();
-    if (_email == null && _isEmailRegistered == null) {
+    if (_email == null && _password == null) {
       _mainWidget = _getEmailAndPasswordInput();
     } else if (_isEmailRegistered != null && _isEmailRegistered) {
       _mainWidget = _getPasswordInput();
@@ -583,5 +557,5 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
 }
 
 bool isValidEmail(String email) {
-  return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+  return (RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email) && _authState.isEmailRegistered(email));
 }
