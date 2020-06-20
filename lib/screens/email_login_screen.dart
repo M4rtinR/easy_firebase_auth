@@ -456,8 +456,6 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                           return strings.emailCantBeEmpty;
                         } else if (!isValidEmail(value)) {
                           return strings.emailNotValid;
-                        } else if (!(await isRegisteredEmail(email, _authState)) {
-                          return strings.errorUserNotFound;
                         }
                         return null;
                       },
@@ -562,8 +560,3 @@ bool isValidEmail(String email) {
   return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
 }
 
-Future<bool> isRegisteredEmail(String email, AuthState _authState) async {
-  bool registered = await _authState.isEmailRegistered(email);
-
-  return registered;
-}
