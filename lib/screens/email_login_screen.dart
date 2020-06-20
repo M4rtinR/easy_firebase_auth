@@ -432,7 +432,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
               )));
     }
 
-    _getEmailAndPasswordInput() {
+    _getEmailAndPasswordInput() async {
       return Container(
           padding: EdgeInsets.all(16.0),
           child: new Form(
@@ -456,7 +456,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                           return strings.emailCantBeEmpty;
                         } else if (!isValidEmail(value)) {
                           return strings.emailNotValid;
-                        } else if (!isRegisteredEmail(email, _authState)) {
+                        } else if (!(await isRegisteredEmail(email, _authState)) {
                           return strings.errorUserNotFound;
                         }
                         return null;
@@ -562,8 +562,8 @@ bool isValidEmail(String email) {
   return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
 }
 
-bool isRegisteredEmail(String email, AuthState _authState) {
-  bool registered = await (_authState.isEmailRegistered(email));
+Future<bool> isRegisteredEmail(String email, AuthState _authState) async {
+  bool registered = await _authState.isEmailRegistered(email);
 
   return registered;
 }
