@@ -556,6 +556,6 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   }
 }
 
-bool isValidEmail(String email, String _authState) {
+bool isValidEmail(String email, AuthState _authState) {
   return (RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email) && _authState.isEmailRegistered(email));
 }
