@@ -65,6 +65,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
 
       try {
         if (mode == _Mode.LOGIN) {
+          print("Logging in...");
           await _authState.signInWithEmail(_email, _password);
         } else {
           await _authState.signUpWithEmail(_email, _password, _name);
@@ -91,6 +92,8 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
 
         String errorCode = e.code;
         String message = e.message;
+
+        print("Caught error: $message");
 
         switch (errorCode) {
           case "ERROR_WEAK_PASSWORD":
@@ -531,7 +534,9 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     }
 
     var _mainWidget = Container();
-    if (_email == null && _password == null) {
+    if (_email == null && _isEmailRegistered == null) {
+      _mainWidget = _getEmailInput();
+    } else if (_email == null && _password == null) {
       _mainWidget = _getEmailAndPasswordInput();
     } else if (_isEmailRegistered != null && _isEmailRegistered) {
       _mainWidget = _getPasswordInput();
