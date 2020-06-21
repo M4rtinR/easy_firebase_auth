@@ -35,7 +35,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   AuthState _authState;
 
   bool _isEmailRegistered;
-  bool _isCorrectPassword;
+  bool _isCorrectPassword = false;
   String _email;
   String _password;
   String _name;
@@ -103,7 +103,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
             message = strings.errorWeakPassword;
             break;
           case "ERROR_INVALID_EMAIL":
-            message = strings.errorInvalidEmail;
+            message = strings.errorInvalidEmail.replaceAll('\$', '$_email');
             break;
           case "ERROR_EMAIL_ALREADY_IN_USE":
             message = strings.errorEmailAlreadyInUse;
@@ -546,7 +546,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     }
 
     var _mainWidget = Container();
-    if (_email == null && _isEmailRegistered == null && _isCorrectPassword == null) {
+    if (_email == null && _isEmailRegistered == null && _isCorrectPassword == false) {
       _mainWidget = _getEmailAndPasswordInput();
     } else if (_email == null && _isEmailRegistered == null) {
       _mainWidget = _getEmailInput();
