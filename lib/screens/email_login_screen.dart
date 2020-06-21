@@ -465,7 +465,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                         }
                         return null;
                       },
-                      onSaved: (value) => _email = value,
+                      onSaved: (value) => _email = value.trim(),
                     ),
                   ),
                   Padding(
@@ -549,13 +549,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     print('email: $_email password: $_password _isEmailRegistered: $_isEmailRegistered _isCorrectPassword: $_isCorrectPassword');
     if (_email == null || _password == null || _isEmailRegistered == null || !_isEmailRegistered || !_isCorrectPassword) {
       _mainWidget = _getEmailAndPasswordInput();
-    } else if (_email == null && _isEmailRegistered == null) {
+    }/* else if (_email == null && _isEmailRegistered == null) {
       _mainWidget = _getEmailInput();
     } else if (_isEmailRegistered != null && _isEmailRegistered) {
       _mainWidget = _getPasswordInput();
     } else if (_isEmailRegistered != null && !_isEmailRegistered) {
       _mainWidget = _getSignUpInput();
-    }
+    }*/
 
     return Scaffold(
         key: _scaffoldKey,
