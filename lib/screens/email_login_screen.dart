@@ -35,6 +35,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   AuthState _authState;
 
   bool _isEmailRegistered;
+  bool _isCorrectPassword;
   String _email;
   String _password;
   String _name;
@@ -70,6 +71,8 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
         } else {
           await _authState.signUpWithEmail(_email, _password, _name);
         }
+
+        _isCorrectPassword = true;
 
         setState(() {
           _loading = false;
@@ -513,6 +516,15 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
+                            setState(() {
+                              _loading = true;
+                            });
+                            _isEmailRegistered =
+                            await _authState.isEmailRegistered(_email);
+                            print("$_email $_isEmailRegistered");
+                            setState(() {
+                              _loading = false;
+                            });
                             print("$_email $_password");
                             await _accessWithEmail(_Mode.LOGIN);
                           }
@@ -534,7 +546,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     }
 
     var _mainWidget = Container();
-    if (_email == null && _password == null) {
+    if (_email == null && _isEmailRegistered == null && _isCorrectPassword == null) {
       _mainWidget = _getEmailAndPasswordInput();
     } else if (_email == null && _isEmailRegistered == null) {
       _mainWidget = _getEmailInput();
