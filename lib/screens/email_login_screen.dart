@@ -528,16 +528,16 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   Padding(
                     padding: EdgeInsets.all(16),
                     child: _showErrorMessage(),
-                  )
+                  ),
                 ],
               )));
     }
 
     var _mainWidget = Container();
-    if (_email == null && _isEmailRegistered == null) {
-      _mainWidget = _getEmailInput();
-    } else if (_email == null && _password == null) {
+    if (_email == null && _password == null) {
       _mainWidget = _getEmailAndPasswordInput();
+    } else if (_email == null && _isEmailRegistered == null) {
+      _mainWidget = _getEmailInput();
     } else if (_isEmailRegistered != null && _isEmailRegistered) {
       _mainWidget = _getPasswordInput();
     } else if (_isEmailRegistered != null && !_isEmailRegistered) {
