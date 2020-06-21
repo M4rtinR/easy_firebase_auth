@@ -546,7 +546,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     }
 
     var _mainWidget = Container();
-    if (_email == null && _isEmailRegistered == null && _isCorrectPassword == false) {
+    if (_email == null || _password == null || !_isEmailRegistered || !_isCorrectPassword) {
       _mainWidget = _getEmailAndPasswordInput();
     } else if (_email == null && _isEmailRegistered == null) {
       _mainWidget = _getEmailInput();
